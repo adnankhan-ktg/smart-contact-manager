@@ -29,7 +29,7 @@ public class OtpService {
 	 public int generateOTP(String key){
 	Random random = new Random();
 	int otp = 100000 + random.nextInt(900000);
-	System.out.println(key);
+	System.out.println(key+" 123");
 	System.out.println(otp);
 	otpCache.put(key, otp);
 	

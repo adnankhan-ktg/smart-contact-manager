@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class JwtRequest {
 	private String username;
 	private String password;
+	
 	public String getUsername() {
 		return username;
 	}

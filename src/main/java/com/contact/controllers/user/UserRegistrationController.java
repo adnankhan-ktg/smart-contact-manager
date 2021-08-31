@@ -38,21 +38,23 @@ public class UserRegistrationController {
 	public ResponseEntity<?> getOtp(@RequestBody Request request)
 	{
 		log.info("Request came on the registration otp layer");
-		if(this.userService.getUser(request.getUsername()) != null)
+		if(this.userRepository.findByMobileNumberOrEmail(request.getMobileNumber(), request.getEmail()) != null)
 		{
 			log.debug("user already registerd");
 			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
-		}
+		}else
+		{
          log.info("user not exits");
-		int GeneratedOtp = otpService.generateOTP(request.getUsername());
+		int GeneratedOtp = otpService.generateOTP(request.getEmail());
 		String GeneratedOtpString = Integer.toString(GeneratedOtp);
 		MailRequest mailRequest = new MailRequest();
 		mailRequest.setMessage("Your Registration OTP ("+GeneratedOtpString+")");
-		mailRequest.setReceiverAddress(request.getUsername());
+		mailRequest.setReceiverAddress(request.getEmail());
 		mailRequest.setSubject("OTP For Registration");
 		log.info("send OTP on the user email");
 		mailService.sendemail(mailRequest);
 		return ResponseEntity.status(HttpStatus.OK).build();
+		}
 		
 		
 		
@@ -64,19 +66,19 @@ public class UserRegistrationController {
 	public ResponseEntity<?> register(@RequestBody User  user)
 	{
 		log.info("check user exists or not");
-		if(this.userService.getUser(user.getUsername()) != null)
+		if(this.userRepository.findByMobileNumberOrEmail(user.getMobileNumber(), user.getEmail()) != null)
 		{
 			log.debug("user already registerd");
 			return ResponseEntity.status(HttpStatus.ALREADY_REPORTED).build();
 		}
 		
-		int serverOtp = otpService.getOtp(user.getUsername());
+		int serverOtp = otpService.getOtp(user.getEmail());
 		int clientOtp = Integer.parseInt(user.getOtp());
 		log.info("match the otp");
 		if(serverOtp == clientOtp)
 		{
 			log.info("OtP is successfully matched");
-			otpService.clearOTP(user.getUsername());
+			otpService.clearOTP(user.getEmail());
 			
 			 User tempUser = null;
 //			 user.setPassword(this.bcryptPasswordEncoder.encode(user.getPassword()));
@@ -92,8 +94,10 @@ public class UserRegistrationController {
 			 }
 			
 		}
+		else {
 		
 		return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build();
+		}
 	}
 
 
