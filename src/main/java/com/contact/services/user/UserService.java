@@ -7,5 +7,6 @@ public interface UserService {
 	
 	public User addUser(User user);
 	public User updatePassword(User user);
+	public User getUser(String str);
 
 }
