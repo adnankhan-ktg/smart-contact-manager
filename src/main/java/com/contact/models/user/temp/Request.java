@@ -9,31 +9,33 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Request {
 	
-	private String username;
-
-	public String getUsername() {
-		return username;
+	private String email;
+	private String mobileNumber;
+	public String getEmail() {
+		return email;
 	}
-
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
-	public Request(String username) {
+	public String getMobileNumber() {
+		return mobileNumber;
+	}
+	public void setMobileNumber(String mobileNumber) {
+		this.mobileNumber = mobileNumber;
+	}
+	public Request(String email, String mobileNumber) {
 		super();
-		this.username = username;
+		this.email = email;
+		this.mobileNumber = mobileNumber;
 	}
-
 	public Request() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
 	@Override
 	public String toString() {
-		return "Request [username=" + username + "]";
+		return "Request [email=" + email + ", mobileNumber=" + mobileNumber + "]";
 	}
-	
-	
 
+    
 }

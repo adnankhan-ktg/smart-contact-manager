@@ -1,5 +1,6 @@
 package com.contact.services.temp;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,15 +21,19 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
        
-	
-             User user = new User();
-             
-             user = this.userRepostitory.findByUsername(username);
+		User user = new User();
+		    if(StringUtils.isNumeric(username))
+		    {
+		    	user = this.userRepostitory.findByMobileNumber(username);
+		    }else {
+		    	user = this.userRepostitory.findByEmail(username);
+		    }
+
              if(user == null)
              {
             	 throw new UsernameNotFoundException(username);
              }
-             return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),new ArrayList<>());
+             return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),new ArrayList<>());
 
 		 
 		 
