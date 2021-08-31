@@ -2,6 +2,7 @@ package com.contact.services.user.impl;
 
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,6 +48,32 @@ public class UserServiceImpl implements UserService {
 		}catch (Exception e) {
 		e.printStackTrace();
 		return tempUser;
+		}
+	}
+
+
+	@Override
+	public User getUser(String str) {
+		User tempUser = null;
+		if(StringUtils.isNumeric(str))
+		{
+			try {
+             tempUser = this.userRepository.findByMobileNumber(str);
+             return tempUser;
+                 
+			}catch (Exception e) {
+				e.printStackTrace();
+				return tempUser;
+			}
+                			
+		}else {
+			try {
+                tempUser = this.userRepository.findByEmail(str);
+                return tempUser;
+			}catch (Exception e) {
+				e.printStackTrace();
+				return tempUser;
+			}
 		}
 	}
 
