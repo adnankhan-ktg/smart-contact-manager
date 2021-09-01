@@ -8,6 +8,7 @@ public interface ContactService {
 	
 	public Contact addContact(Contact contact);
 	public List<Contact> getContacts(String id);
+	public void deleteContact(String id, String email);
 	
 
 }

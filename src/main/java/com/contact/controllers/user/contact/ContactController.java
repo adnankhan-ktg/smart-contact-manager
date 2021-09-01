@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -90,5 +91,23 @@ public class ContactController {
 	    		 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	    	 }
 	     }
+	     
+	     
+	     @PostMapping("/delete/{mobileNumber}")
+	     public ResponseEntity<?> deleteContact(@PathVariable("mobileNumber") String mobileNumber)
+	     {
+	    	 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
+		                .getPrincipal();
+	        	String username = userDetails.getUsername();
+	        	try {
+	    	      this.contactService.deleteContact(mobileNumber, username);
+	        	}
+	        	catch (Exception e) {
+					e.printStackTrace();
+					
+				}
+	    	      return ResponseEntity.status(HttpStatus.OK).build();
+	     }
+	     
 
 }
