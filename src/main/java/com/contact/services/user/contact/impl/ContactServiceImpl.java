@@ -40,5 +40,13 @@ public class ContactServiceImpl implements ContactService {
 			return list;
 		}
 	}
+	
+	@Override
+	public void deleteContact(String id, String email) {
+	 
+	   	Contact c =this.contactRepository.findByMobileNumberAndUserEmail(id, email);
+	   	this.contactRepository.delete(c);
+		
+	}
 
 }
